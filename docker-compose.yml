@@ -13,6 +13,8 @@ services:
     ports:
       - "5433:5432"
     command: postgres -c shared_buffers=512MB -c max_connections=400
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
     healthcheck:
       test: ["CMD", "pg_isready"]
 
