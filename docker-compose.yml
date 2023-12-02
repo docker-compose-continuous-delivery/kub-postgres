@@ -2,9 +2,10 @@ version: "3.9"
 
 services:
 
-  apoo-postgres:
+  kub-postgres:
     image: postgres:15-alpine
     restart: unless-stopped
+    container_name: kub-postgres
     env_file:
       - .postgres.env
     volumes:
