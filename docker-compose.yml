@@ -14,9 +14,28 @@ services:
       - "5433:5432"
     command: postgres -c shared_buffers=512MB -c max_connections=400
     labels:
+      - "traefik.enable=false"
       - "com.centurylinklabs.watchtower.enable=true"
     healthcheck:
-      test: ["CMD", "pg_isready"]
+      test: [ "CMD", "pg_isready" ]
+    networks:
+      - traefik
+
+  kub-postgres-exporter:
+    image: quay.io/prometheuscommunity/postgres-exporter
+    restart: unless-stopped
+    container_name: kub-postgres-exporter
+    env_file:
+      - .postgres.env
+    labels:
+      - "traefik.enable=false"
+      - "com.centurylinklabs.watchtower.enable=true"
+    depends_on:
+      - kub-postgres
+    healthcheck:
+      test: [ "CMD", "pg_isready" ]
+    networks:
+      - traefik
 
 
 networks:
